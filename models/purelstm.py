@@ -34,7 +34,6 @@ class PureLSTM(nn.Module):
                                   num_layers=self.args.encoder_num_layer,
                                   bidirectional=self.args.bidirectional,
                                   batch_first=self.args.batch_first)
-        # self.bnForOut = nn.BatchNorm1d(args.pred_len)
         self.sequenceForOut = nn.Sequential(nn.Linear(self.args.encoder_hidden_dim * bidirection,
                                                       len(self.args.pred_index)))
 
@@ -75,10 +74,6 @@ class PureLSTM(nn.Module):
 
         out, h = self.rnnGetC(inputs,h)
 
-        # print("input.size ={}".format(inputs.size()))
-        # print("out.size = {}".format(out.size()))
-        # print("hidden.size = {}".format(h.size()))
-
         if self.args.batch_first:
             last_out = out[:,-1,:]
             last_out = last_out.unsqueeze(1)
@@ -94,16 +89,6 @@ class PureLSTM(nn.Module):
             outs.append(temp_out)
         outs = torch.stack(outs, dim=0)
         outs = outs.squeeze(1)
-
-        # batch noremal ,we find that it over fitting,when we add this layer
-        # if self.args.batch_first:
-        #     outs = outs.view(r_batch_size,self.args.pred_len,self.args.decoder_hidden_dim).contiguous()
-        #     outs = self.bnForOut(outs)
-        # else:
-        #     outs = outs.permute(1, 0, 2)
-        #     outs = outs.view(r_batch_size, self.args.pred_len, self.args.decoder_hidden_dim).contiguous()
-        #     outs = self.bnForOut(outs)
-        #     outs = outs.permute(1,0,2)
 
         # get result
         outs = self.sequenceForOut(outs)

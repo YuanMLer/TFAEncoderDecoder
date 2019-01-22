@@ -12,7 +12,6 @@ from torch.autograd import Variable
 __all__ = [
     'taendecoder'
 ]
-
 use_cuda = torch.cuda.is_available()
 
 class TemporalAttentionEncoderDecoder(nn.Module):
