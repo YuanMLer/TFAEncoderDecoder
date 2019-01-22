@@ -22,13 +22,6 @@ def train(loader,model,optimizer,criterion,args):
             predict_M = predict_M.cuda()
             predict_obs = predict_obs.cuda()
         outs = model(history_msg, predict_M)
-        # if idx % 100 == 0:
-        #     print("history_msg = {}".format(history_msg))
-        #     print("predict_M = {}".format(predict_M))
-        #     print("predict_obs = {}".format(predict_obs))
-        #     print("outs = {}".format(outs))
-        # print("outs.size = {}".format(outs.size()))
-        # print("predict_obs.size = {}".format(predict_obs.size()))
         loss = criterion(outs, predict_obs)
         n = predict_obs.size(0)*predict_obs.size(1)*predict_obs.size(2)
         losses.update(loss, n)
@@ -116,9 +109,6 @@ def test_return_data(loader, model, mse_criterion, _mse_criterion, args, getAtte
             else:
                 out = model(history_msg, predict_M, getAttention)
 
-            # print("out.size = {}".format(out.size()))
-            # print("predict_obs.size = {}".format(predict_obs.size()))
-            # print("predict_M.size = {}".format(predict_M.size()))
             mse_losse = mse_criterion(out, predict_obs)
             _mse_losse = _mse_criterion(out, predict_obs)
             n = predict_obs.size(0) * predict_obs.size(1) * predict_obs.size(2)
@@ -134,25 +124,17 @@ def test_return_data(loader, model, mse_criterion, _mse_criterion, args, getAtte
                 out = out.squeeze(0)
                 predict_M = predict_M.squeeze(0)
                 predict_obs = predict_obs.squeeze(0)
-            # print("out.size = {}".format(out.size()))
-            # print("predict_obs.size = {}".format(predict_obs.size()))
-            # print("predict_M.size = {}".format(predict_M.size()))
-            # print("predict_M.size = {}".format(predict_M.size()))
+
             predict_M = predict_M[:,(1, 4, 3)].cpu().detach().numpy()
             predict_obs = predict_obs.cpu().detach().numpy()
             out = out.cpu().detach().numpy()
-            # print("predict_M = {}".format(predict_M))
-            # print("predict_obs = {}".format(predict_obs))
-            # print("out = {}".format(out))
-            # print("len(predict_M) = {}".format(len(predict_M)))
+
             for id_ in range(len(predict_M)):
                 predict_M_data.append(predict_M[id_].tolist())
                 obs_data.append(predict_obs[id_].tolist())
                 pred_out_data.append(out[id_].tolist())
-            # print(predict_M_data)
         else:
             continue
-    # print("obs_data = {}".format(obs_data))
 
     print("*" * 80)
     print("getAttention in test_return_data = {}".format(getAttention))

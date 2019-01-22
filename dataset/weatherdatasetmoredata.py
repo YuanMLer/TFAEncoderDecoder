@@ -151,39 +151,19 @@ class WeatherDatasetMoreData(Dataset):
                         for col in threshold:
                             t = set(data[data[col] < threshold[col][0]].index)
                             del_index |= t
-                            # data = data.drop(t)
                             t = set(data[data[col] > threshold[col][1]].index)
                             del_index |= t
-                            # data = data.drop(t)
                             t = set(data[data[col] == -9999].index)
                             del_index |= t
-                        # data = data.replace(-9999, np.nan)
-                        # data = data.dropna()
-                        # data = data.values
-                        # data = data.astype('float32')
+
 
 
                         del_index = sorted(del_index)
-
-                        # print("len(del_index) = {}".format(len(del_index)))
-                        # print("del_index = {}".format(del_index))
-
                         data = data.drop(del_index)
-
-                        # put deleted data into new csv
-                        # df = pd.DataFrame(data)
-                        # fname = os.path.join(self.root_dir,"new_%s" % (file))
-                        # print("fname = {}".format(fname))
-                        # df.to_csv(fname,index=False, sep=',')
-                        # print("len(data) = {}".format(len(data)))
-
                         total_len = len(data)  # the length of an effective sequence
                         e_seq = [[0,total_len-1]]
-                        # e_seq = self._effective_seq(seq_len, pred_len, total_len, del_index)
-                        # print("e_seq = {}".format(e_seq))
                         datas, seqs, start_num = self._final_data(data.values, e_seq, datas, seqs, seq_len + pred_len,
                                                              start_num)
-                        # self._save_data(datas, os.path.join(self.root_dir, 'new'), file)
                     except FileNotFoundError:
                         print("{} not exist".format(file))
                     else:
@@ -196,11 +176,6 @@ class WeatherDatasetMoreData(Dataset):
                                  'seqs': seqs,
                                  'length': length}
                     pk.dump(data_dict, pick_file)
-
-        # print("datas = {}".format(datas))
-        # print("len(datas) = {}".format(len(datas)))
-        # print("seqs = {}".format(seqs))
-        # print("length = {}".format(length))
         return datas, seqs, length
 
     def _effective_seq(self,seq_len, pred_len, total_len, del_index):

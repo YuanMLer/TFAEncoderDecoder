@@ -4,16 +4,7 @@
 import torch
 import torch.nn as nn
 
-
-# torch.random.manual_seed(1)
-# y = torch.randn(2,2,2)
-# pred = torch.randn(2,2,2)
-#
-# print("y = {}".format(y))
-# print("pred = {}".format(pred))
-
 __all__= ['thetaMSEloss']
-
 
 class thetaMSEloss(nn.Module):
 
@@ -42,16 +33,3 @@ class thetaMSEloss(nn.Module):
             loss_sum = torch.div(y_pow, y_var)
             loss = torch.sum(loss_sum) / (y.size(0) * y.size(1) * y.size(2))
         return loss
-
-
-# def main():
-#     M = thetaMSEloss()
-#     loss = M(y, pred)
-#     print("ThetaMSE = {}".format(loss))
-#     criterion = torch.nn.MSELoss()
-#     loss = criterion(pred, y)
-#     print("MSELoss = {}".format(loss))
-#
-#
-# if __name__ == '__main__':
-#     main()

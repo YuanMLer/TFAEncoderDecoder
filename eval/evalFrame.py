@@ -28,15 +28,7 @@ def setargs(args, strs,batchsize=1):
     args.criterion = strs[5]
     args.optimizer = strs[6]
     args.batch_size = batchsize
-    # print("args.encoder_num_layer = {}".format(args.encoder_num_layer))
-    # print("args.decoder_num_layer = {}".format(args.decoder_num_layer))
-    # print("args.seq_len = {}".format(args.seq_len))
-    # print("args.pred_len = {}".format(args.pred_len))
-    # print("args.encoder_hidden_dim = {}".format(args.encoder_hidden_dim))
-    # print("args.decoder_hidden_dim = {}".format(args.decoder_hidden_dim))
-    # print("args.bidirectional = {}".format(args.bidirectional))
-    # print("args.criterion = {}".format(args.criterion))
-    # print("args.optimizer = {}".format(args.optimizer))
+
     return args
 
 # 读取模型
@@ -71,7 +63,6 @@ def eval(model, model_file, csv_file, csv_result_path, args, threshold, getAtten
     assert os.path.isfile(model_file), "{} is not a file name".format(model_file)
     print("model file is {}".format(model_file))
     checkpoint = torch.load(model_file)
-    # print("checkpoint[state_dict] = {}".format(checkpoint['state_dict']))
     model.load_state_dict(checkpoint['state_dict'])
 
     # load dataset file
@@ -81,10 +72,6 @@ def eval(model, model_file, csv_file, csv_result_path, args, threshold, getAtten
     mse_criterion = torch.nn.MSELoss()
     total_mse_criterion = TotalVarMSEloss()
     # todo mae and rmse
-    # mae_criterion =
-    # rmse_criterion =
-    # mse_test_loss, total_mse_test_loss, num, predict_M_data, obs_data, pred_out_data = \
-    #     test_return_attention_data(test_loader, model, mse_criterion, total_mse_criterion, args)
     if getAttention:
         mse_test_loss, total_mse_test_loss, num, predict_M_data, obs_data, pred_out_data, attentions_data = \
             test_return_data(test_loader, model, mse_criterion, total_mse_criterion, args, getAttention)
@@ -162,13 +149,9 @@ def eval(model, model_file, csv_file, csv_result_path, args, threshold, getAtten
 
 def main():
     #test文件夹
-    # testpath = "singleStationDataTestA"
-    # csvfile = "testA_27_sta{}-24.csv"
-    # testpath = "singleStationDataTestB"
-    # csvfile = "testB_48_sta{}-24.csv"
+
     test_csvfiles = [("singleStationDataTestA","testA_27_sta{}-24.csv"),("singleStationDataTestB","testB_48_sta{}-24.csv")]
     station = 10
-    # 读取文件列表
     # threshold of weather variant
     threshold = {'psfc_M': [850, 1100],
                  't2m_M': [-40, 55],
@@ -211,33 +194,13 @@ def main():
                  }
     args, state = ParserList()
     model_base = os.path.join(args.basedir, 'checkpoint')
-    # files = os.listdir(model_base)
-    # files.remove("twotsaendecoder_EL_2_DL_2_MSE_SGD_SEQ_48_PRED_24_HD_64_BD_1")
-    # files.remove("threetsaendecoder_EL_2_DL_2_MSE_SGD_SEQ_48_PRED_24_HD_64_BD_1")
-    # files.remove("fourtsaendecoder_EL_2_DL_2_MSE_SGD_SEQ_48_PRED_24_HD_64_BD_1")
     files = [
-             # 'purelstm_EL_2_DL_2_MSE_Adam_SEQ_36_PRED_12_HD_64_BD_1',
-             # 'purelstm_EL_2_DL_2_MSE_Adam_SEQ_48_PRED_24_HD_64_BD_1',
-             # 'purelstm_EL_2_DL_2_MSE_Adam_SEQ_72_PRED_37_HD_64_BD_1',
-             # 'saendecoder_EL_2_DL_2_MSE_Adam_SEQ_36_PRED_12_HD_64_BD_1',
-             # 'saendecoder_EL_2_DL_2_MSE_Adam_SEQ_48_PRED_24_HD_64_BD_1',
-             # 'saendecoder_EL_2_DL_2_MSE_Adam_SEQ_72_PRED_37_HD_64_BD_1',
-             # 'taendecoder_EL_2_DL_2_MSE_Adam_SEQ_36_PRED_12_HD_64_BD_1',
-             # 'taendecoder_EL_2_DL_2_MSE_Adam_SEQ_48_PRED_24_HD_64_BD_1',
-             # 'taendecoder_EL_2_DL_2_MSE_Adam_SEQ_72_PRED_37_HD_64_BD_1',
-             # 'tsaendecoder_EL_2_DL_2_MSE_Adam_SEQ_36_PRED_12_HD_64_BD_1',
-             # 'tsaendecoder_EL_2_DL_2_MSE_Adam_SEQ_48_PRED_24_HD_64_BD_1',
-             # 'tsaendecoder_EL_2_DL_2_MSE_Adam_SEQ_72_PRED_37_HD_64_BD_1',
-             # 'tsaendecoder_EL_2_DL_2_TotalVarMSEloss_Adam_SEQ_36_PRED_12_HD_64_BD_1',
-             # 'saplusendecoder_EL_2_DL_2_MSE_Adam_SEQ_36_PRED_12_HD_64_BD_1',
-             # 'tsapureendecoder_EL_2_DL_2_MSE_Adam_SEQ_36_PRED_12_HD_64_BD_1',
             'taclassicendecoder_EL_2_DL_2_MSE_Adam_SEQ_36_PRED_12_HD_64_BD_1',
             'tsaclassicendecoder_EL_2_DL_2_MSE_Adam_SEQ_36_PRED_12_HD_64_BD_1'
 
             ]
     for file in files:
         strs = file.split("_")
-        # 重新设置args参数
         args = setargs(args, strs, 1)
         modelname = strs[0]
         for testpath, csvfile in test_csvfiles:

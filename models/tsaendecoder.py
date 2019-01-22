@@ -88,8 +88,6 @@ class TemporalSuperCalAttentionEncoderDecoder(nn.Module):
             if not self.args.batch_first:
                 out = out.permute(1, 0, 2)
             # decoder
-            # print("out.size = {}".format(out.size()))
-            # print("pred.size = {}".format(pred.size()))
             out = self.sequenceForDecoder(torch.cat((out, pred),dim=-1))
             out, h_ = self.decoder(out, h_)
             outs.append(out)
