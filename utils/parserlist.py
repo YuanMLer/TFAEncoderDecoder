@@ -67,7 +67,7 @@ def ParserList():
     parser.add_argument('--resume-file', default='checkpoint.pth.tar', type=str, metavar='PATH',
                         help='file name of latest checkpoint file(default: none)')
 
-    parser.add_argument('--train-single', default=False, type=bool,
+    parser.add_argument('--train-single', default=True, type=bool,
                         help='Wheather train single station model or not')
     parser.add_argument('--test', default=False, type=bool,
                         help='Wheather only test the modle or not ')

@@ -10,7 +10,7 @@ import torch.backends.cudnn as cudnn
 import models as models
 from utils import ParserList,AverageMeter,Logger,mkdir_p,AverageMeter,\
     init_params,adjust_learning_rate,save_checkpoint,writeparameter
-from dataset import WeatherDataset,WeatherDatasetMoreData
+from dataset import WeatherDatasetMoreData
 from losses import TotalVarMSEloss
 from trainandtest import *
 from test import *
