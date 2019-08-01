@@ -30,8 +30,8 @@ class TemporalSuperCalAttentionEncoderDecoder(nn.Module):
         self.bi_num = 2 if args.bidirectional else 1
         # Sequence for the decoder attention
         self.sequenceForAttention = nn.Sequential(nn.Linear(args.encoder_hidden_dim * args.encoder_num_layer *
-                                                                   self.bi_num + len(args.supercomput_index),
-                                                                   args.seq_len))
+                                                            self.bi_num + len(args.supercomput_index),
+                                                            args.seq_len))
         self.sequenceForDecoder = nn.Sequential(nn.Linear(args.encoder_hidden_dim + len(args.supercomput_index),
                                                             args.decoder_hidden_dim))
         # rnnGetPred get the observe value use the super calculated value
